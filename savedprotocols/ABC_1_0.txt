@@ -1,0 +1,17 @@
+ABC
+MLC
+1
+2
+A
+B
+2
+Ka
+A
+A,B
+A
+Kb
+B
+B,A
+B
+A creates na for B
+exit

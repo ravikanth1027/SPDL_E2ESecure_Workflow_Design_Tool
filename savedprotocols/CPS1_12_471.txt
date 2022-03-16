@@ -1,0 +1,27 @@
+CPS1
+BLC2
+12
+2
+A
+B
+4
+Ka
+A
+A,B
+A
+ka1
+A
+A
+A
+kb
+B
+B,A
+B
+kb1
+B
+B
+B
+A creates na for B
+A sends O4 to 
+A sends O4 to B
+exit

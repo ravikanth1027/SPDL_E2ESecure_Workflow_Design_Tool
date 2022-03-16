@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  #query_object{
+    display: none;
+  }
+
+  #query_para_container{
+    display: none;
+  }
+
+  #shobjects{
+    display: none;
+  }
+
+  #qobjects{
+    display: none;
+  }
+
+  #share_object{
+    display: none;
+  }
+
+  #query_shared_div{
+    display: none;
+  }
+
+  #function_tuple_flag{
+    display: none;
+  }
+
+  #blc2_flag{
+    display: none;
+  }
+  
+  #Div1 {
+    display: block;
+  }
+
+  #Div2 {
+    display: none;
+  }
+
+  #objects{
+   display: none; 
+  }
+
+  #obj_type{
+    display: none;
+  }
+
+  #objects_list{
+    display: none;
+  }
+  #newobject{
+    display: none;
+  }
+
+  #simple_object{
+    display: none;
+  }
+  #subject2{
+   display: block; 
+  }
+
+  /*#subject1{
+   display: block; 
+  }*/
+
+
+  #prep{
+   display: block; 
+  }
+
+  #simple_object_id {
+    display: none;
+  }
+
+  #complex_object_id {
+    display: none;
+  }
+  /** {
+    box-sizing: border-box;
+  }*/
+
+  /* Add padding to containers */
+  /*.container {
+    padding: 16px;
+    background-color: white;
+  }*/
+
+  /* Full-width input fields */
+  input[type=text], input[type=password] {
+    width: 50%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+    background: #f1f1f1;
+  }
+
+
+  select {
+    width: 50%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+    background: #f1f1f1;
+  }
+  /*input[type=text]:focus, input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+  }*/
+
+  /* Overwrite default styles of hr */
+  hr {
+    border: 1px solid #f1f1f1;
+    /*margin-bottom: 25px;*/
+  }
+
+  /* Set a style for the submit button */
+  .registerbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 50%;
+    opacity: 0.9;
+  }
+
+  .registerbtn:hover {
+    opacity: 1;
+  }
+
+  /* Add a blue text color to links */
+  a {
+    color: dodgerblue;
+  }
+
+  /* Set a grey background color and center the text of the "sign in" section */
+  .signin {
+    background-color: #f1f1f1;
+    text-align: center;
+  }
+</style>
+</head>
+
+<script type="text/javascript">
+    class Principal{
+        constructor(namep, ownerp, readerp, writerp) {
+        this.namep=namep
+        this.ownerp=ownerp
+        this.readerp = readerp
+        this.writerp = writerp
+        this.localObjects=[]
+        }
+    }
+
+    class PObject{
+      static count = 0;
+      constructor(nameo, ownero, readero, writero) {
+      this.assigno= "O"+ PObject.count
+      this.nameo=nameo
+      this.ownero=ownero
+      this.readero=readero
+      this.writero=writero
+      this.node = new Tree()
+      PObject.count = PObject.count + 1
+      }
+      
+    }
+
+    class Tree{
+      constructor(){
+        this.child = []
+        this.data = null
+      }
+      printtree(level){
+            console.log("\t"*level+ this.data)
+            nochild = (this.child.length)
+            for (chld in nochild){
+              this.child[nochild[chld]].node.printtree(level+1)    
+            }
+      }
+      Checkreaders(self,pri,obj,level){
+        u=obj.length
+        v=parseInt(obj.substr(1,u))
+        if (!pri in object1[v].readero){
+          console.log("Principal",pri,"is not allowed to read",obj,":",object1[v].node.data)
+          /*console.log("Do you want to add principal",pri,"to the readers list of",obj,"?(y/n)")*/
+          if (confirm("Do you want to add principal",pri,"to the readers list of",obj,"?(y/n)")) {
+              txt = "yes";
+          } else {
+              txt = "no";
+          }
+          
+          update = txt
+          if (update == 'yes'){
+            object1[v].readero.push(pri)
+            console.log("The label of the object now is",object1[v].assigno,":",object1[v].nameo,"(",object1[v].ownero,",",object1[v].readero,",",object1[v].writero,")")
+          }
+        }
+        nochild = this.child.length
+        for (chld in nochild){
+          this.child[nochild[chld]].node.Checkreaders(pri,this.child[chld].assigno,level+1)
+        }
+      }
+    }
+function CheckPrincipals(principal_list){
+  pn=principal_list.length
+  cnt = 0
+  for(j in principal_list){
+    if (!principal_list[j] in namepr){
+      console.log("-----ERROR-----",principal_list[j]," not in principal list\n")
+    }
+    else{
+      cnt += 1
+    }
+  }
+  if (cnt != pn){
+    return 1
+  }
+  else{
+    return 0
+  }
+}
+
+function Checkcreates(msgparts){
+  if (msgparts.length != 5){
+    console.log("Wrong Language.\n")
+    return 1
+  }
+  if (msgparts[3] != "for"){
+    console.log("Wrong Language.\n")
+    return 1
+  }
+  p1 = msgparts[0]
+  p2 = msgparts[4].split(",")
+  if (CheckPrincipals([p1])==1){
+    console.log("return from Checkcreates1")
+    return 1
+  }
+  if (CheckPrincipals(p2)==1){
+    console.log("return from Checkcreates1")
+    return 1
+  }
+  return 0
+}
+
+
+function Checksends(msgparts){
+  if (msgparts.length != 5){
+    console.log("Wrong Language.\n")
+    return 1
+  }
+  if (msgparts[3] != "to"){
+    console.log("Wrong Language.\n")
+    return 1
+  }
+  p1 = msgparts[0]
+  obj = msgparts[2]
+  p2 = msgparts[4]
+  if (CheckPrincipals([p1,p2])==1){
+    return 1
+  }
+  i = dictpri[p1]
+  if (! obj in principal_array[i].localObjects){
+    console.log("-----ERROR----Object :",obj," not in local space of principal",p1,"\n")
+    return 1
+  }
+  return 0
+}
+
+function Checkreceives(msgparts){
+  if (msgparts.length != 3){
+    console.log("Wrong Language.\n")
+    return 1
+  }
+  p1 = msgparts[0]
+  if (CheckPrincipals([p1])==1){
+    return 1
+  }
+  /*console.log(msgparts[2].substr(1,msgparts[2].length))*/
+  /*if (parseInt(msgparts[2].substr(1,msgparts[2].length)) >= count){
+    console.log("-----ERROR----Object :",msgparts[2],"does not exist\n")
+    return 1
+  }*/
+  return 0
+  }
+
+function Checkmsg(msgparts){
+  if (msgparts[1]=="creates"){
+    if (Checkcreates(msgparts) == 1){
+      return "error"
+    }
+    else{
+      return "creates"
+    }
+  }
+  else if (msgparts[1]=="sends"){
+    if (Checksends(msgparts) == 1){
+      return "error"
+    }
+    else{
+      return "sends"
+    }
+  }
+  else if (msgparts[1]=="receives"){
+    if (Checkreceives(msgparts) == 1){
+      return "error"
+    }
+    else{
+      return "receives"
+    }
+  }
+  else{
+    return "error"
+  }
+}
+</script>
+
+<script type="text/javascript">
+  principals = []
+  protocol_steps = []
+  list_principals = []
+  principals = []
+  main_object = {}
+  objects = []
+  spdl_step = 0
+  namepr = []
+  nameobj = []
+  verbs = ["creates", "sends"]
+  bptype = ''
+  var msg =<%-JSON.stringify(exist)%>
+  
+function filldata(){
+    var x = document.getElementById("existProtocols");
+  for(var i=0;i<msg.length;i++){
+    var option = document.createElement("option");
+    option.text = msg[i].split("/")[1];
+    x.add(option);
+  }  
+}  
+
+var protocol_content = ''
+function main(file_content){
+
+  /*for(i in file_content){
+    console.log(file_content[i])
+  }*/
+  validateform(file_content)
+  stmt()
+  flag1 = getValidation(file_content)
+  console.log("Flag :", flag1)
+  if (flag1){
+    if(confirm("Protocol loaded Successfully - Want to swith to manual mode")){
+    switchVisible()
+    principalsDropDown()
+      }else{
+      var url= "/"; 
+    window.location = url;
+     
+  }
+}
+}
+
+function switchVisible() {
+      var div1=document.getElementById('Div1');
+      var div2=document.getElementById('Div2');
+      
+      if (div1 !== undefined && div2 !== undefined) {
+        div1.style.display = div2.style.display === '' ? 'none' : div2.style.display === 'none' ? 'none' : 'block';
+        div2.style.display = div1.style.display === 'block' ? 'none' : 'block';
+      }
+}
+
+
+function getValidation(file_content){
+  var flag = true
+  for(var i=spdl_step; spdl_step < file_content.length; spdl_step++){
+      flag = flag && verifystepfromFile(file_content[spdl_step])
+    }
+    return flag
+}
+
+function validateform(file_content){ 
+  var name_of_protocol = file_content[spdl_step]
+  protocol_steps.push(name_of_protocol)
+  spdl_step = spdl_step + 1
+  bptype = file_content[spdl_step]
+  protocol_steps.push(bptype)
+  spdl_step = spdl_step + 1
+  var version  = file_content[spdl_step]
+  protocol_steps.push(version)
+  spdl_step = spdl_step + 1
+  var no_of_principals = file_content[spdl_step]
+  protocol_steps.push(no_of_principals)
+  spdl_step = spdl_step + 1
+  for(var i=0 ;i < no_of_principals;i++){
+    principal_name = file_content[spdl_step]
+    list_principals.push(principal_name)
+    protocol_steps.push(principal_name)  // for workflow file
+    spdl_step = spdl_step + 1
+  }
+  for(var i=0 ;i < no_of_principals;i++){
+    principal = new Principal(list_principals[i], list_principals[i], list_principals, list_principals[i]);
+    principals.push(principal)
+  }
+  var no_of_objects = file_content[spdl_step]
+  protocol_steps.push(no_of_objects)
+  spdl_step = spdl_step + 1
+  
+  for(var l=0 ; l < no_of_objects;l++){
+    name = file_content[spdl_step]
+    protocol_steps.push(name)
+    spdl_step = spdl_step + 1
+
+    owner = file_content[spdl_step]
+    spdl_step = spdl_step + 1
+    protocol_steps.push(owner)
+
+    if (!list_principals.includes(owner)){
+      alert(owner+":not in principals")
+      return false
+    }
+    
+    readers = file_content[spdl_step]
+    spdl_step = spdl_step + 1
+    tmp_readers= readers.split(",");
+    for(var j=0;j<tmp_readers.length;j++){
+      if(!list_principals.includes(tmp_readers[j]))
+      {
+        alert(tmp_readers[j]+" reader not in principals for object"+ name)
+        return  false;
+      }
+    }
+    protocol_steps.push(readers)
+    writers = file_content[spdl_step]
+    spdl_step = spdl_step + 1
+    tmp_writers = writers.split(",");
+    for(var k=0;k<tmp_writers.length;k++){
+      if(!list_principals.includes(tmp_writers[k])){
+        alert(tmp_writers[k]+" writers not in principals for object"+ name)
+        return false
+      }
+    }
+    protocol_steps.push(writers)
+    object = new PObject(name, owner, tmp_readers, tmp_writers);    
+    object.node.data = name
+    objects.push(object)
+  }
+
+
+  main_object["principals"] = principals
+  main_object["objects"] = objects
+  return main_object
+}
+
+
+
+function stmt(){
+    var rows = main_object
+    principal_array = rows["principals"]
+    for(var k1 =0;k1<principal_array.length;k1++){
+      namepr.push(principal_array[k1].namep)
+    }
+    object1 = rows["objects"]
+    for(var k1 =0;k1<object1.length;k1++){
+      nameobj.push(object1[k1].nameo)
+    }
+    dictpri = {}
+    ProcessingFile=""
+    prn = principal_array.length
+    obn = object1.length
+    for(var i=0;i< prn;i++) {
+      dictpri[principal_array[i].namep]=i
+    }
+    //console.log("dictpri", dictpri)
+    label = []
+    for (var i=0;i< obn;i++){
+       readers_of_objects = object1[i].readero
+       readn = readers_of_objects.length
+        for (var j=0;j<readn;j++){
+          k = dictpri[readers_of_objects[j]] //k = dictpri[object1[i].readero[j]]
+          principal_array[k].localObjects.push(object1[i].assigno)
+        }
+    }
+}
+
+
+function ParseComplexObj(obj){
+  start = obj.find('(')
+  fname = obj.split('(')
+  potential = obj.substr(start+1,obj.length-1)
+  objlist = potential.split(",")
+  return fname[0], objlist
+}
+
+function verifystepfromFile(step){
+  console.log("Calling Step ", step)
+  msgparts = step.split(" ")
+  fnc = Checkmsg(msgparts)
+  if (fnc == "error"){
+      console.log("Step does not follow language guidelines\n")
+      protocol_steps.push(step)
+    }
+  if (fnc == "creates"){
+    if (CreateObject(msgparts[0],msgparts[2],msgparts[4]) == true){
+        protocol_steps.push(step)
+      }
+  }
+  if (fnc == "sends"){
+    if (SendObject(msgparts[0],msgparts[2],msgparts[4]) == true){
+      protocol_steps.push(step)
+    }
+  }
+  if(fnc == "receives"){
+    if(ReceiveObject(msgparts[0],msgparts[2]) == true){
+      protocol_steps.push(step)
+    }
+  }
+  return true
+}
+
+
+function CreateObject(p1,obj,p2){
+  LabelChange = 0
+  im = dictpri[p1]
+  readers = principal_array[im].readerp
+  writers = principal_array[im].writerp
+
+  objectType = CheckObject(obj)
+  if(objectType == "incorrect"){
+    console.log("The object",obj,"is not well formed\n")
+    return false
+  }
+  if(objectType == "complex"){
+    objList = ParseComplex(p1,obj)
+    if (objList.length==0){
+      return false
+    }
+    else{
+      for(var k=0;k<objList.length;k++){
+        v=parseInt(objList[k].substr(1,objlist[k].length))
+        readers = Intersection(readers,objects[v].readero)
+        writers = Union(writers,objects[v].writero)
+      }
+      LabelChange = 1
+    }
+  }
+
+  p2 = p2.split(",")
+  if (CheckDowngrade(p1,readers,writers,p2) == 1){
+    return false
+  }
+
+  if (LabelChange == 1){
+    principal_array[im ].readerp = readers
+    principal_array[im].writerp = writers
+  }
+
+  new_object = new PObject(obj,principal_array[im].ownerp,Union(principal_array[im].readerp,p2),principal_array[im].writerp);    
+  /*console.log("new_object", new_object.assigno)*/
+  objects.push(new_object)
+  AddObjecttoLocal(p1,new_object.assigno)
+  return true
+}
+
+function SendObject(p1,obj,p2){
+    
+    ik = dictpri[p1]
+    if (!obj in principal_array[ik].localObjects){
+      console.log(obj,"is not in the local space of principal",p1,"\n")
+      return 1
+    }
+
+    v=parseInt(obj.substr(1,obj.length))
+    readers = principal_array[ik].readerp
+    writers = principal_array[ik].writerp
+    readers = Intersection(readers,object1[v].readero)
+    writers = Union(writers,object1[v].writero)
+    if (CheckDowngrade(p1,readers,writers,[p2]) == 1){
+      return false
+    }
+
+    principal_array[ik].readerp = readers
+    principal_array[ik].writerp = writers
+
+    
+    new_object = new PObject(obj,principal_array[ik].ownerp,Union(principal_array[ik].readerp,[p2]),principal_array[ik].writerp)
+    objects.push(new_object)
+    AddObjecttoLocal(p1,new_object.assigno)
+    console.log("The object being sent is referenced as",new_object.assigno, new_object.ownero,"\n")
+    return true
+}
+
+function ReceiveObject(p1,obj){
+    
+    v=parseInt(obj.substr(1,obj.length))
+    if (!p1 in object1[v].readero){
+      console.log("------Error-----principal",p1,"is not allowed to read object",obj,"\n")
+      return false
+    }
+
+    l=dictpri[p1]
+    principal_array[l].readerp = Intersection(principal_array[l].readerp,object1[v].readero)
+    console.log("In ReceiveObject - Union function", principal_array[l].writerp,object1[v].writero)
+    principal_array[l].writerp = Union(principal_array[l].writerp,object1[v].writero)
+
+
+    new_object = new PObject(object1[v].nameo,principal_array[l].ownerp,principal_array[l].readerp,principal_array[l].writerp)
+    objects.push(new_object)
+    console.log("The object being recevied is referenced as",new_object.assigno,"\n")
+    AddObjecttoLocal(p1,new_object.assigno)
+    return true
+}
+
+function Union(lst1, lst2){
+  console.log(lst1, lst2)
+  if(lst1.length > lst2.length){
+    for(i in lst2){
+      if(lst1.indexOf(lst2[i]) == -1){
+        lst1.push(lst2[i])
+      }
+    }
+    final_list = lst1
+  }else{
+    for(i in lst1){
+      if(lst2.indexOf(lst1[i]) == -1){
+        lst2.push(lst1[i])
+      }
+      final_list = lst2
+    }
+  }
+  console.log("Union",final_list)
+  return final_list
+}
+
+function Intersection(lst1, lst2){
+  intersect = []
+  if(lst1.length < lst2.length){
+      for(i in lst1){
+        if(lst2.indexOf(lst1[i]) != -1){
+          intersect.push(lst1[i])
+        }
+        
+      }
+      return intersect
+    }else{
+      for(i in lst2){
+        if(lst1.indexOf(lst2[i]) != -1){
+          intersect.push(lst2[i])
+        }
+      }
+    /*console.log("Intersect: ",final_list)*/
+    return intersect
+  }
+}
+
+function CheckDowngrade(p1,r,w,p2){
+  console.log("Calling CheckDowngrade", p1, r, w, p2)
+    flag = 0
+    for (p in p2){
+      if (! p2[p] in r){
+        flag = 1
+        break
+      }
+    }
+    if (flag == 0){
+      return 0
+    }
+
+    r = Union(r,w)
+    for (p in p2){
+      if (!p2[p] in r){
+        flag = 0
+        break
+      }
+    }
+
+    if (w == [p1] || flag == 1){
+      alert("Principals",p2,"added as readers for the new object\n")
+      return 0
+    }
+    else{
+      /*console.log("Allowing principals",p2,"to read the new object was a security threat\n")
+      console.log("Do you still wish to allow principals",p2,"to read the new object? (y/n)")*/
+      choice = getConfirmation(p2)
+      if (choice == 'y'){
+        alert("Adding principals",p2,"as readers as per request\n")
+        return 0
+      }
+      else{
+        return 1
+      }
+    }
+}
+
+function AddObjecttoLocal(p1,assignobj){
+    console.log("AddObjecttoLocal: ", assignobj)
+    j = parseInt(assignobj.substr(1,assignobj.length))
+    i = dictpri[p1]
+    principal_array[i].localObjects.push(objects[j].assigno)
+    console.log("The object",object1[j].nameo,"is stored as",assignobj,"and should be referred as the same in further references")
+    console.log("The initial label of the object ",assignobj,"is",objects[j].nameo,": (",objects[j].ownero,",",objects[j].readero,",",objects[j].writero,")")
+}
+
+function CheckObject(obj){
+  start = obj.indexOf('(')
+    if (start == -1){
+      return "simple"
+    }
+    if (obj[obj.length-1] != ')'){
+      return "incorrect"
+    }
+    return "complex"
+}
+
+function ParseComplex(p1,obj){
+    start = obj.indexOf('(')
+    potential = obj.substr(start+1,obj.length-1)
+    objlist = potential.split(",")
+    i = dictpri[p1]
+
+    for (o in objlist){
+      if (!objlist[o] in principal_array[i].localObjects){
+        console.log(obj,"is not a wellformed complex object\n")
+        return []
+      }
+    }
+
+    return objlist
+}
+
+function getprotocol(){
+  var proto = document.getElementById("existProtocols").value
+  var xhttp = new XMLHttpRequest();
+ xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      //document.getElementById("demo").innerHTML 
+
+      protocol_content = JSON.parse(this.responseText)
+      //console.log(this.responseText)
+      main(protocol_content["filecontent"])
+      //JSON.stringify();
+    }
+  }
+  url = "/getproto/?proto="+proto
+  xhttp.open("GET", url, true);
+  xhttp.send();
+}
+
+function selectobjects(){
+  document.getElementById("objects").options.length = 0;
+  var x = document.getElementById("objects");
+  var option = document.createElement("option");
+      option.text = "Select Object";
+      x.add(option);
+    local_objects_subject1 = []
+    selected_subject1 = document.getElementById("subject1").value;
+    local_objects_subject1 = principal_array[dictpri[selected_subject1]].localObjects
+    for(var i=0;i<local_objects_subject1.length;i++){
+      var option = document.createElement("option");
+      option.text = local_objects_subject1[i];
+      x.add(option);  
+    }
+  document.getElementById("subject2").options.length = 0;
+  var x = document.getElementById("subject2");
+    var option = document.createElement("option");
+      option.text = "Select principal";
+      x.add(option);
+    selected_subject1 = document.getElementById("subject1").value;
+    for(var i=0;i<namepr.length;i++){
+      /*if(selected_subject1 !== namepr[i]){*/
+        var option = document.createElement("option");
+        option.text = namepr[i];
+        x.add(option);    
+      /*}*/
+    }
+}
+function principalsDropDown() {
+    document.getElementById("subject1").options.length = 0;
+    var x = document.getElementById("subject1");
+    var option = document.createElement("option");
+      option.text = "Select principal";
+      x.add(option);
+    for(var i=0;i<namepr.length;i++){
+      var option = document.createElement("option");
+      option.text = namepr[i];
+      x.add(option);  
+    }
+
+    document.getElementById("verbs").options.length = 0;
+    var x = document.getElementById("verbs");
+    var option = document.createElement("option");
+      option.text = "Select Verb";
+      x.add(option);
+    for(var i=0;i<verbs.length;i++){
+      var option = document.createElement("option");
+      option.text = verbs[i];
+      x.add(option);  
+    }
+}
+
+
+function getParameter(){
+  var str = document.getElementById("para_object").value
+  var parameter_container = document.getElementById("parameter_container");
+
+    var fc = parameter_container.firstChild;
+
+    while( fc ) {
+    parameter_container.removeChild( fc );
+    fc = parameter_container.firstChild;
+      }
+      for (i = 0; i < str; i++) {
+        parameter_container.appendChild(document.createTextNode("Enter " + (i+1) +" parameter"));
+        var input = document.createElement("input");
+        input.type = "text";
+        input.name = "para_obj" + i;
+        input.id = "para_obj" + i;
+        parameter_container.appendChild(input);
+        parameter_container.appendChild(document.createElement("br"));
+      }
+}
+
+function enable(){
+    var subject1_principal =  document.getElementById("subject1").value
+    var objects_tag = document.getElementById("objects");
+    var objects_text_tag = document.getElementById("newobject");
+    var prep = document.getElementById("prep")
+    prep.style.display = 'none';
+    var option = document.createElement("option");
+    option.text = "Select";
+    var x = document.getElementById("subject2");
+    var simple_object_id = document.getElementById("simple_object_id")
+    var complex_object_id = document.getElementById("complex_object_id")
+    var object_type = document.getElementById("object_type")
+    var obj_type = document.getElementById("obj_type")
+    var objects_list = document.getElementById("objects_list")
+    var query_object = document.getElementById("query_object")
+    var share_object = document.getElementById("share_object")
+    var function_tuple_flag  = document.getElementById("function_tuple_flag")
+    var query_shared_div = document.getElementById("query_shared_div")
+
+
+    if(document.getElementById("verbs").value == "creates"){
+        obj_type.style.display = "block"
+        object_type.style.display = "block"
+        objects_tag.style.display = "none"
+        objects_text_tag.style.display="none"
+        objects_list.style.display = "none"
+        prep.style.display = 'block';
+        document.getElementById("prep").value = "for"; 
+        var sub2 = document.getElementById("subject2")
+        sub2.style.display = "block"
+        query_para_container.style.display = "none"        
+    }
+    else if(document.getElementById("verbs").value == "sends"){ 
+      /*var bptype = document.getElementById("bptype").value*/
+      if (bptype == "BLC1"){
+        query_para_container.style.display = "none"
+      }else if(bptype == "BLC2"){
+        blc2_flag.style.display = "block"
+        function_tuple_flag.style.display = "block"
+        query_para_container.style.display = "none"
+
+      }else if(bptype == "SLC"){
+
+        /*query_shared_div.style.display = "block"*/
+        query_para_container.style.display = "block"
+        shobjects.style.display = "block"
+        qobjects.style.display = "block"
+        document.getElementById("shobjects").options.length = 0;
+        var x = document.getElementById("shobjects");
+        var option = document.createElement("option");
+        local_objects_subject1 = []
+        selected_subject1 = document.getElementById("subject1").value;
+        local_objects_subject1 = principal_array[dictpri[selected_subject1]].localObjects
+        for(var i=0;i<local_objects_subject1.length;i++){
+          var option = document.createElement("option");
+          option.text = local_objects_subject1[i];
+          x.add(option);
+
+        }
+        document.getElementById("qobjects").options.length = 0;
+        var y = document.getElementById("qobjects");
+        var option = document.createElement("option");
+        local_objects_subject1 = []
+        selected_subject1 = document.getElementById("subject1").value;
+        local_objects_subject1 = principal_array[dictpri[selected_subject1]].localObjects
+        for(var i=0;i<local_objects_subject1.length;i++){
+          var option = document.createElement("option");
+          option.text = local_objects_subject1[i];
+          y.add(option);
+
+        }
+        
+
+      }
+      obj_type.style.display = "none"
+      object_type.style.display = "none"
+      simple_object_id.style.display = "none"
+      complex_object_id.style.display = "none"
+      objects_list.style.display = "block"
+      objects_tag.style.display = "block"
+      objects_text_tag.style.display="none"
+      prep.style.display = 'block';
+      document.getElementById("prep").value = "to";
+      var sub2 = document.getElementById("subject2")
+      sub2.style.display = "block"
+    }
+    else if(document.getElementById("verbs").value == "receives"){
+        
+        obj_type.style.display = "none"
+        objects_tag.style.display = "none"
+        objects_text_tag.style.display="block"
+        /*objects_tag.style.display = "block"
+        objects_text_tag.style.display="none"*/
+        x.style.display = "block"
+        var sub2 = document.getElementById("subject2")
+        sub2.style.display = "none"
+    }
+}
+
+fcount = 1
+function enable_objectField(){
+  var str = document.getElementById("object_type").value
+  /*console.log(str)*/
+  var str1 = document.getElementById("complex_object_id")
+  var str2 = document.getElementById("simple_object_id")
+  var str3 = document.getElementById("simple_object")
+  if(str === "complex"){
+  str1.style.display = "block"
+  str2.style.display = "none"
+  document.getElementById('function').value = "f"+fcount
+  fcount = fcount +1
+  }else{
+  str1.style.display = "none"
+  str2.style.display = "block"
+  str3.style.display = "block"
+
+  }
+}
+
+function verifystep(){
+  console.log("In verifystep")
+  console.log("OBJECT steps: ", objects)
+  subject1 = document.getElementById("subject1").value;
+  prep = document.getElementById("prep").value
+  
+  
+  fnc = document.getElementById("verbs").value;
+  /*subject2 = document.getElementById("subject2").value*/
+  subject2_multi = document.getElementById("subject2").selectedOptions
+  st = []
+
+  for(var i=0;i<subject2_multi.length;i++){
+   st.push(subject2_multi[i].value)
+  }
+  
+  subject2 = st.toString()
+  if(fnc == "creates"){
+    /*newobject = document.getElementById("newobject").value*/
+    object_type = document.getElementById("object_type").value
+    if(object_type === "complex"){
+      function_name = document.getElementById("function").value
+      para_object = document.getElementById("para_object").value
+
+      tmp_list_para = []
+      for(var k=0;k< para_object;k++){
+          tmp_list_para.push(document.getElementById("para_obj"+k).value)
+      }
+
+      newobject = function_name+"("+tmp_list_para.toString()+")"
+      console.log("new Object- complex",newobject)  
+    }else{
+      newobject = document.getElementById("simple_object").value
+      console.log("new Object- simple",newobject)  
+    }
+    
+    flag = CreateObject(subject1,newobject,subject2)
+    
+    if (flag == true){
+     step = subject1 +" "+ fnc +" "+ newobject+ " "+ prep +" "+ subject2
+     protocol_steps.push(step)
+   }
+  }
+  if(fnc == "sends"){
+    object = document.getElementById("objects").value
+    shared_multi = document.getElementById("shobjects").selectedOptions
+    st = []
+    for(var i=0;i<shared_multi.length;i++){
+      st.push(shared_multi[i].value)
+    }
+    share_objects = st.toString()
+
+
+    query_multi = document.getElementById("qobjects").selectedOptions
+    st = []
+    for(var i=0;i<query_multi.length;i++){
+      st.push(query_multi[i].value)
+    }
+    query_objects = st.toString()
+
+
+
+    flag = SendObject(subject1,object,subject2)
+    if(flag == true){
+      step = subject1 +" "+ fnc +" "+ object+ " "+ prep +" "+ subject2
+      protocol_steps.push(step) 
+      protocol_steps.push(share_objects)
+      protocol_steps.push(query_objects)
+
+      recevied_obj_number = parseInt(object.substr(1,object.length))
+      recevied_obj = "O"+(recevied_obj_number+1)
+      
+      rflag = ReceiveObject(subject2,recevied_obj)
+      if(rflag == true){
+        step = subject2 +" "+ "receives" +" "+ recevied_obj
+        protocol_steps.push(step)
+      }
+    }
+  }
+  if(fnc == "receives"){
+    newobject = document.getElementById("newobject").value
+    /*flag = ReceiveObject(subject1,newobject)
+    if(flag == true){
+      step = subject1 +" "+ fnc +" "+ newobject
+      protocol_steps.push(step)
+    }*/
+    
+  }
+
+  console.log("Protocol steps: ", protocol_steps)
+
+  document.getElementById("subject1").value = "Select principal"
+  document.getElementById("verbs").value = "Select Verb"
+  var subject1_principal =  document.getElementById("subject1").value
+    var objects_tag = document.getElementById("objects");
+    var objects_text_tag = document.getElementById("newobject");
+    var prep = document.getElementById("prep")
+    prep.style.display = 'none';
+    var option = document.createElement("option");
+    option.text = "Select";
+    var x = document.getElementById("subject2");
+    var simple_object_id = document.getElementById("simple_object_id")
+    var complex_object_id = document.getElementById("complex_object_id")
+    var object_type = document.getElementById("object_type")
+    var obj_type = document.getElementById("obj_type")
+    var objects_list = document.getElementById("objects_list")
+    var query_object = document.getElementById("query_object")
+    var share_object = document.getElementById("share_object")
+    var function_tuple_flag  = document.getElementById("function_tuple_flag")
+    var query_shared_div = document.getElementById("query_shared_div")
+  obj_type.style.display = "none"
+  /*object_type.style.display = "none"*/
+  simple_object_id.style.display = "none"
+  complex_object_id.style.display = "none"
+  objects_list.style.display = "none"
+  objects_tag.style.display = "none"
+  objects_text_tag.style.display="none"
+  /*objects_list.style.display = "none"
+  obj_type.style.display = "none"
+  query_para_container.style.display = "none"*/
+  //document.getElementById("workflow").value = protocol_steps
+  //document.getElementById("saveworkflow").value = protocol_steps
+  console.log("Objects: ", objects)
+}
+
+</script>
+<script type="text/javascript">
+  function submitWorkFlow(){
+    protocol_steps.push("exit")
+    protocol_steps_final = {}
+    for (i in protocol_steps){
+      protocol_steps_final[i] = protocol_steps[i]
+    }
+    console.log("protocol_steps_final: ", protocol_steps_final)
+    document.getElementById("workflow").value = JSON.stringify(protocol_steps_final)
+    if (confirm(protocol_steps)) {
+      return true
+    } else {
+      return false
+    }
+
+  }
+  function saveWorkFlow(){
+   protocol_steps_save = {}
+    for (i in protocol_steps){
+      protocol_steps_save[i] = protocol_steps[i]
+    }
+    
+    document.getElementById("saveworkflow").value = JSON.stringify(protocol_steps_save) //protocol_steps_save
+    /*console.log("protocol_steps_save", JSON.stringify(protocol_steps_save))
+    console.log("protocol_steps*********", document.getElementById("saveworkflow").value)*/
+    if (confirm(protocol_steps_save)) {
+      return true
+    } else {
+      return false
+    }
+  }
+</script>
+<body onload="filldata()">
+  <h1>Welcome to SPDL</h1>
+  <p id="demo"></p>
+  <div class="container" id="Div1">
+  <table>
+    <tr>
+      <td>
+        <div class="container">  
+          <p>Please select protocol file </p>
+          
+          <select id="existProtocols">
+            <option value="default">Select</option>
+            
+          </select>
+          <button type="submit" class="registerbtn" onclick="getprotocol()" >Get Protocol </button>
+          
+        </div>  
+
+      </td>
+    </tr>
+  
+  </table>
+  </div>
+  <div class="container" id="Div2">
+    <h1>Add Protocol steps</h1>
+    <p>Please fill in this form to add steps</p>
+    <hr>
+
+    <label for="Name"><b>Principal1</b></label>
+    <select id="subject1" onchange="selectobjects()">
+      
+    </select>
+    <br>
+    <label for="Verb"><b>Verb</b></label>
+    <select id="verbs" onchange="enable()" required="true"></select><br>
+    <div id="blc2_flag">
+    <label for="function_tuple_flag"><b>Is this function a tuple ?</b></label> 
+     <select id="function_tuple_flag" name="function_tuple_flag" onchange="enable_Field()">
+      <option value="0" >True</option>
+      <option value="1" selected>False</option>
+    </select><br>
+    </div>
+
+    <div id="obj_type">
+    <label for="obj_type"><b>Object Type</b></label> 
+     <select id="object_type" name="object_type"  required="true" onchange="enable_objectField()">
+      <option value="default">Select Object</option>
+      <option value="simple">Simple</option>
+      <option value="complex">Complex</option>
+    </select><br>
+    </div>
+    <div id="simple_object_id">
+    <label for="Name"><b>Object Name</b></label>
+    <input type="text" name="simple_object" id="simple_object" ><br> 
+    </div>
+    <br>
+    <div id="complex_object_id">
+    <input type="text" name="function" id="function" placeholder="function"readonly="true">
+    <label for="Name"><b>Number of parameters required</b></label>
+    <input type="text" name="para_object" id="para_object" onchange="getParameter()"><br> 
+    <div id="parameter_container"></div>
+    </div>
+
+    <div id="objects_list">
+    <label for="Name"><b>Object</b></label>
+    <select id="objects">  
+    </select>
+    </div>
+    <br>
+    <!-- <div class="container" id="blc2">
+      
+    </div> -->
+    <input type="text" name="newobject" id="newobject" >
+    <input type="text" name="prep" id="prep" placeholder="to/for"readonly="true">
+    <br>
+    <label for="Verb"><b>Principal2</b></label>
+    <select id="subject2" multiple required="true">
+      
+    </select>
+    <br>
+    <div id="query_para_container">
+    <label for="Name"><b>Objects to be shared until this step</b></label>
+    <select id="shobjects" multiple >
+    <option value="default">Select Type</option>  
+    </select>
+    <label for="Name"><b>Query Objects until this step</b></label>
+    <select id="qobjects" multiple>  
+      <option value="default">Select Type</option>
+    </select>
+    </div>
+    </br>
+    <button type="submit" name="Next" class = "registerbtn" value="Next Step" onclick="verifystep()">Next</button>
+
+
+    <form method="POST" action="/save">
+    <input type="text" name="saveworkflow" id="saveworkflow" hidden="true">
+    <input type="submit" name="submit" class = "registerbtn" value="Save" onclick="saveWorkFlow()"></input>  
+    </form>
+
+    <form method="POST" action="/newprotocol">
+    <input type="text" name="workflow" id="workflow" hidden="true">
+    <input type="submit" name="submit" class = "registerbtn" value="Done" onclick="return submitWorkFlow()"></input>  
+    </form>
+  </div>
+
+</body>
+</html>
